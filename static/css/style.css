@@ -7,28 +7,52 @@
 }
 
 :root {
-  --ink: #1c1917;
-  --paper: #faf6f0;
-  --accent: #d95d39;
-  --accent-dark: #a8442a;
-  --line: #e3d9c9;
-  --text-muted: #6b6459;
+  --ink: #1b1730;
+  --cream: #fff8ed;
+  --pink: #ff2d8a;
+  --purple: #a390f8;
+  --line: #542f09;
+  --text-muted: #4a4460;
+  --sky: #2eaadb;
+  --night: #231372;
+  --lime: #d6ff3f;
+  --orange: #ffcf3d;
   --radius: 4px;
 }
 
 body {
-  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family:
+    "Poppins",
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
   color: var(--ink);
-  background-color: var(--paper);
+  background-color: var(--cream);
+  background-image: radial-gradient(
+    circle,
+    rgba(27, 23, 48, 0.1) 1.4px,
+    transparent 1.4px
+  );
+  background-size: 22px 22px;
+
   line-height: 1.6;
 }
 
-h1,
 .brand {
+  display: inline-block;
+  padding: 0.4rem 1.1rem;
+  border-radius: 10px;
+  border: 1.5px solid var(--line);
+  box-shadow: 3px 2px 2px 1px rgba(0, 0, 0, 1);
   font-family:
-    "Space Grotesk",
+    "Poppins",
     -apple-system,
     sans-serif;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: none;
 }
 
 .container {
@@ -39,22 +63,11 @@ h1,
 
 /*Header dengan Flexbox*/
 
-.site-header {
-  border-bottom: 1px solid var(--line);
-}
-
 .site-header .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1.25rem 1.5rem;
-}
-
-.brand {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--ink);
-  text-decoration: none;
 }
 
 .site-header nav {
@@ -92,17 +105,32 @@ h1,
 }
 
 .hero-kicker {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--accent-dark);
+  color: var(--ink);
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.hero-greetings {
+  font-family: "Caveat", cursive;
+  font-size: 2.5rem;
+  letter-spacing: 0.1em;
+  color: var(--sky);
   font-weight: 700;
   margin-bottom: 0.75rem;
 }
 
 .hero-identity h1 {
+  font-family:
+    "Irish Grover",
+    -apple-system,
+    sans-serif;
+  font-weight: 700;
+  color: var(--night);
   font-size: clamp(3rem, 7vw, 5rem);
-  line-height: 0.95;
+  line-height: 1.2;
 }
 
 .bio {
@@ -140,7 +168,7 @@ h1,
   font-size: 0.85rem;
   font-weight: 600;
   text-decoration: none;
-  color: var(--paper);
+  color: var(--cream);
   background-color: var(--ink);
   border-radius: var(--radius);
   padding: 0.5rem 1.1rem;
@@ -148,7 +176,7 @@ h1,
 }
 
 .social-link:hover {
-  background-color: var(--accent);
+  background-color: var(--sky);
 }
 
 .hero-photo {
@@ -163,7 +191,7 @@ h1,
   left: 1.25rem;
   width: 100%;
   height: 100%;
-  background-color: var(--accent);
+  background-color: var(--pink);
   border-radius: var(--radius);
   z-index: 0;
 }
@@ -183,9 +211,10 @@ h1,
 
 .site-footer {
   padding: 1.5rem;
-  color: var(--text-muted);
+  color: var(--paper);
   font-size: 0.85rem;
-  border-top: 1px solid var(--line);
+  background-color: var(--orange);
+  border-top: 1.5px solid var(--line);
 }
 
 @media (max-width: 600px) {
@@ -204,4 +233,31 @@ h1,
   .social-links {
     justify-content: flex-start;
   }
+}
+
+/* Frame Border Untuk Navigasi */
+
+.nav-frame {
+  display: inline-block;
+  padding: 0.4rem 1.1rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--line);
+  box-shadow: 3px 2px 2px 1px rgba(0, 0, 0, 1);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--paper);
+}
+
+/* Variasi warna per pill */
+.nav-frame--purple {
+  background-color: var(--purple);
+}
+
+.nav-frame--lime {
+  background-color: var(--lime);
+}
+
+.nav-frame--orange {
+  background-color: var(--orange);
 }
