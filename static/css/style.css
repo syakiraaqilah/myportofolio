@@ -114,29 +114,55 @@ body {
 }
 
 .hero-greetings {
-  font-family: "Caveat", cursive;
-  font-size: 2.5rem;
-  letter-spacing: 0.1em;
-  color: var(--sky);
+  font-family:
+    "Raleway",
+    -apple-system,
+    sans-serif;
+  font-size: 2rem;
   font-weight: 700;
   margin-bottom: 0.75rem;
 }
 
 .hero-identity h1 {
   font-family:
-    "Irish Grover",
+    "Poppins",
     -apple-system,
     sans-serif;
   font-weight: 700;
-  color: var(--night);
-  font-size: clamp(3rem, 7vw, 5rem);
+  color: var(--ink);
+  font-size: clamp(3rem, 8vw, 4.5rem);
   line-height: 1.2;
+}
+
+.hero-name__first {
+  display: block;
+  width: fit-content;
+  color: #1a902c;
+  background-color: var(--lime);
+  padding: 0 1rem 0.7rem;
+}
+
+.hero-position {
+  color: #1b5265;
+  display: block;
+  width: fit-content;
+  font-size: clamp(2rem, 8vw, 4rem);
+  font-family:
+    "Lato",
+    -apple-system,
+    sans-serif;
+  font-style: italic;
+  letter-spacing: 0.08em;
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-top: 0.1em;
+  padding: 0 1rem 0.4rem;
 }
 
 .bio {
   color: var(--text-muted);
   max-width: 480px;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2.5rem;
 }
 
 .meta-list {
@@ -213,7 +239,7 @@ body {
   padding: 1.5rem;
   color: var(--paper);
   font-size: 0.85rem;
-  background-color: var(--orange);
+  background-color: #d7c8b0;
   border-top: 1.5px solid var(--line);
 }
 
@@ -247,6 +273,16 @@ body {
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--paper);
+  transition: transform 0.15s ease;
+}
+
+.nav-frame:hover {
+  transform: translateY(-2px);
+}
+
+.nav-frame:active {
+  transform: translateY(1px);
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 1);
 }
 
 /* Variasi warna per pill */
@@ -260,4 +296,84 @@ body {
 
 .nav-frame--orange {
   background-color: var(--orange);
+}
+
+/* Section Skills */
+
+.section-kicker {
+  font-size: 3ch;
+  color: var(--sky);
+  font-weight: 400;
+  font-family: "Caveat", sans-serif;
+}
+
+.section-title {
+  display: inline-block;
+  padding: 0.5rem 0.5rem;
+  border-radius: 8cpx;
+  font-family: "Poppins", sans-serif;
+  font-size: 2.5rem;
+  color: var(--ink);
+  margin-bottom: 2rem;
+}
+
+.skills-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  margin-bottom: 4rem;
+}
+
+.skill-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  background-color: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 33px;
+  padding: 1.5rem 2.5rem;
+  box-shadow: 4px 4px 0 var(--ink);
+  transition:
+    background-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+  margin-bottom: 0.1rem;
+}
+
+.skill-icon {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.skill-name {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--ink);
+  transition: color 0.25s ease;
+}
+
+.skill-chip:hover {
+  background-color: #fff306;
+  transform: translateY(-4px);
+}
+
+.skills-group {
+  margin-bottom: 2.5rem;
+}
+
+.skills-subheading {
+  font-family: "Poppins", sans-serif;
+  width: fit-content;
+  padding: 0.1rem 0.7rem;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
 }
