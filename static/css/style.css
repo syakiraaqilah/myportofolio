@@ -10,13 +10,13 @@
   --ink: #1b1730;
   --cream: #fff8ed;
   --pink: #ff2d8a;
-  --purple: #a390f8;
+  --purple: #d9a3ff;
   --line: #542f09;
   --text-muted: #4a4460;
   --sky: #2eaadb;
-  --night: #231372;
+  --cyan: #6ff3fc;
   --lime: #d6ff3f;
-  --orange: #ffcf3d;
+  --orange: #ffdd78;
   --radius: 4px;
 }
 
@@ -35,7 +35,6 @@ body {
     transparent 1.4px
   );
   background-size: 22px 22px;
-
   line-height: 1.6;
 }
 
@@ -65,14 +64,18 @@ body {
 
 .site-header .container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   padding: 1.25rem 1.5rem;
+  gap: 1.5rem;
 }
 
 .site-header nav {
   display: flex;
+  justify-content: flex-end;
   gap: 2rem;
+  width: fit-content;
 }
 
 .site-header nav a {
@@ -209,6 +212,7 @@ body {
   grid-area: photo;
   align-self: center;
   position: relative;
+  margin-bottom: 1.5rem;
 }
 
 .photo-block {
@@ -265,7 +269,7 @@ body {
 
 .nav-frame {
   display: inline-block;
-  padding: 0.4rem 1.1rem;
+  padding: 0.4rem 0.8rem;
   border-radius: 999px;
   border: 1.5px solid var(--line);
   box-shadow: 3px 2px 2px 1px rgba(0, 0, 0, 1);
@@ -286,16 +290,12 @@ body {
 }
 
 /* Variasi warna per pill */
-.nav-frame--purple {
+.nav-frame--profile {
   background-color: var(--purple);
 }
 
-.nav-frame--lime {
-  background-color: var(--lime);
-}
-
-.nav-frame--orange {
-  background-color: var(--orange);
+.nav-frame--skills {
+  background-color: var(--cyan);
 }
 
 /* Section Skills */
@@ -310,7 +310,6 @@ body {
 .section-title {
   display: inline-block;
   padding: 0.5rem 0.5rem;
-  border-radius: 8cpx;
   font-family: "Poppins", sans-serif;
   font-size: 2.5rem;
   color: var(--ink);
@@ -323,7 +322,7 @@ body {
   flex-wrap: wrap;
   gap: 1.5rem;
   padding: 1rem 0;
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
 }
 
 .skill-chip {
@@ -358,12 +357,17 @@ body {
 }
 
 .skill-chip:hover {
-  background-color: #fff306;
+  background-color: var(--orange);
   transform: translateY(-4px);
 }
 
+.skill-chip:active {
+  transform: translateY(2px);
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 1);
+}
+
 .skills-group {
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
 }
 
 .skills-subheading {
