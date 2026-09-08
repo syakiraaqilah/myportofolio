@@ -10,14 +10,20 @@
   --ink: #1b1730;
   --cream: #fff8ed;
   --pink: #ff2d8a;
-  --purple: #d9a3ff;
   --line: #542f09;
   --text-muted: #4a4460;
-  --sky: #2eaadb;
-  --cyan: #6ff3fc;
+  --sky: #42c3f6;
   --lime: #d6ff3f;
-  --orange: #ffdd78;
   --radius: 4px;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+html {
+  overflow-y: scroll;
 }
 
 body {
@@ -36,6 +42,13 @@ body {
   );
   background-size: 22px 22px;
   line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
 }
 
 .brand {
@@ -69,6 +82,10 @@ body {
   align-items: flex-start;
   padding: 1.25rem 1.5rem;
   gap: 1.5rem;
+}
+
+.site-header {
+  border: 0;
 }
 
 .site-header nav {
@@ -245,6 +262,7 @@ body {
   font-size: 0.85rem;
   background-color: #d7c8b0;
   border-top: 1.5px solid var(--line);
+  margin-top: auto;
 }
 
 @media (max-width: 600px) {
@@ -276,7 +294,7 @@ body {
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--paper);
+  color: var(--ink);
   transition: transform 0.15s ease;
 }
 
@@ -291,11 +309,15 @@ body {
 
 /* Variasi warna per pill */
 .nav-frame--profile {
-  background-color: var(--purple);
+  background-color: var(--pink);
 }
 
 .nav-frame--skills {
-  background-color: var(--cyan);
+  background-color: var(--lime);
+}
+
+.nav-frame--experience {
+  background-color: var(--sky);
 }
 
 /* Section Skills */
@@ -357,7 +379,7 @@ body {
 }
 
 .skill-chip:hover {
-  background-color: var(--orange);
+  background-color: var(--lime);
   transform: translateY(-4px);
 }
 
@@ -380,4 +402,63 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 1rem;
+}
+
+/* Experience */
+
+.experience-section {
+  padding: 4rem 0;
+}
+
+.section-kicker {
+  color: var(--sky);
+  font-family: "Caveat", cursive;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  margin-bottom: 1rem;
+}
+
+.experience-section h1 {
+  margin: 0.4rem 0 1.5rem;
+  font-size: 2rem;
+}
+
+.experience-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.experience-card {
+  padding: 1.25rem;
+  background-color: #fff;
+  border: 1.7px solid var(--ink);
+  border-radius: 22px;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.experience-category {
+  color: var(--ink);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.experience-card h2 {
+  margin: 0.5rem 0;
+  font-size: 1.25rem;
+}
+
+.experience-description,
+.empty-state {
+  color: var(--text-muted);
+}
+
+.experience-status {
+  font-style: italic;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
 }

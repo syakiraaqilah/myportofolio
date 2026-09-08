@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Syakira - Portfolio</title>
+    <title>{{ name }} - Portfolio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -15,10 +15,11 @@
   <body>
     <header class="site-header">
       <div class="container">
-        <a href="#profile" class="brand">Syakira's Room</a>
+        <a href="{% url 'main:show_main' %}" class="brand">{{ name }}'s Room</a>
         <nav>
-          <a href="#profile" class="nav-frame nav-frame--profile">Profile</a>
-          <a href="#skills" class="nav-frame nav-frame--skills">Skills</a>
+          <a href="{% url 'main:show_main' %}" class="nav-frame nav-frame--profile">Profile</a>
+          <a href="{% url 'main:show_main' %}#skills" class="nav-frame nav-frame--skills">Skills</a>
+          <a href="{% url 'main:show_experience' %}" class="nav-frame nav-frame--experience">Experience</a>
         </nav>
       </div>
     </header>
@@ -32,7 +33,7 @@
             </p>
             <p class="hero-greetings">Hi, I'm</p>
             <h1 class="hero-name">
-              <span class="hero-name__first">Syakira</span>
+              <span class="hero-name__first">{{ name }}</span>
               <span class="hero-position">An IT enthusiast</span>
             </h1>
           </div>
@@ -41,35 +42,33 @@
             <img
               class="avatar"
               src="/static/img/syaki.png"
-              alt="Photo of Syakira"
+              alt="Photo of {{ name }}"
             />
           </div>
           <div class="hero-details">
             <p class="bio">
-              A CS student who navigates the tech world line by line, constantly
-              on an endless quest to master new tech. Fueled by curiosity,
-              driven by code, and always ready to debug any challenge.
+              {{ bio }}
             </p>
             <dl class="meta-list">
               <div class="meta-row">
                 <dt>NPM</dt>
-                <dd>2506541622</dd>
+                <dd>{{ npm }}</dd>
               </div>
               <div class="meta-row">
                 <dt>Program</dt>
-                <dd>S1 Ilmu Komputer</dd>
+                <dd>{{ study_program }}</dd>
               </div>
             </dl>
             <div class="social-links">
-              <a href="https://github.com/syakiraaqilah" class="social-link"
+              <a href="https://github.com/{{ name }}aqilah" class="social-link"
                 >GitHub</a
               >
               <a
-                href="https://linkedin.com/in/syakira-aqilah-amru"
+                href="https://linkedin.com/in/{{ name }}-aqilah-amru"
                 class="social-link"
                 >LinkedIn</a
               >
-              <a href="mailto:syakira.aqilah.amru@gmail.com" class="social-link"
+              <a href="mailto:{{ name }}.aqilah.amru@gmail.com" class="social-link"
                 >Email</a
               >
             </div>
@@ -118,7 +117,7 @@
     <footer class="site-footer">
       <div class="container">
         <p>
-          &copy; 2026 Syakira. Fakultas Ilmu Komputer, Universitas Indonesia.
+          &copy; 2026 {{ name }}. Fakultas Ilmu Komputer, Universitas Indonesia.
         </p>
       </div>
     </footer>
