@@ -322,11 +322,8 @@ main {
 
 /* Section Skills */
 
-.section-kicker {
-  font-size: 3ch;
-  color: var(--sky);
-  font-weight: 400;
-  font-family: "Caveat", sans-serif;
+.skills-section {
+  padding: 4rem 0;
 }
 
 .section-title {

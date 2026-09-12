@@ -18,7 +18,7 @@
         <a href="{% url 'main:show_main' %}" class="brand">{{ name }}'s Room</a>
         <nav>
           <a href="{% url 'main:show_main' %}" class="nav-frame nav-frame--profile">Profile</a>
-          <a href="{% url 'main:show_main' %}#skills" class="nav-frame nav-frame--skills">Skills</a>
+          <a href="{% url 'main:show_skills' %}" class="nav-frame nav-frame--skills">Skills</a>
           <a href="{% url 'main:show_experience' %}" class="nav-frame nav-frame--experience">Experience</a>
         </nav>
       </div>
@@ -75,43 +75,6 @@
           </div>
         </div>
       </section>
-      <section class="skills" id="skills">
-          <div class="container">
-            <p class="section-kicker">—What I Know—</p>
-            <h2 class="section-title">Skills</h2>
-            <div class="skills-group">
-              <h3 class="skills-subheading">Programming Language</h3>
-              <ul class="skills-list">
-                <li class="skill-chip">
-                  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python" class="skill-icon" />
-                  <span class="skill-name">Python</span>
-                </li>
-                <li class="skill-chip">
-                  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="Java" class="skill-icon" />
-                  <span class="skill-name">Java</span>
-                </li>
-              </ul>
-            </div>
-            <div class="skills-group">
-              <h3 class="skills-subheading">Tools</h3>
-              <ul class="skills-list">
-                <li class="skill-chip skill-chip--tool">
-                  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/canva/canva-original.svg" alt="Canva" class="skill-icon" />
-                  <span class="skill-name">Canva</span>
-                </li>
-                <li class="skill-chip skill-chip--tool">
-                  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt="Git" class="skill-icon" />
-                  <span class="skill-name">Git</span>
-                </li>
-                <li class="skill-chip skill-chip--tool">
-                  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg" alt="vSCode" class="skill-icon" />
-                  <span class="skill-name">VSCode</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
-        </div>
     </main>
 
     <footer class="site-footer">
