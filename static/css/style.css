@@ -429,16 +429,31 @@ main {
 }
 
 .experience-card {
-  padding: 1.25rem;
+  position: relative;
+  padding: 1.25rem 1.5rem;
   background-color: #fff;
   border: 1.7px solid var(--ink);
   border-radius: 22px;
   box-shadow: 4px 4px 0 var(--ink);
 }
+.experience-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.experience-duration {
+  font-size: 0.8rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
 
 .experience-category {
   color: var(--ink);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
 }
@@ -451,11 +466,5 @@ main {
 .experience-description,
 .empty-state {
   color: var(--text-muted);
-}
-
-.experience-status {
-  font-style: italic;
-  margin-top: 1rem;
   font-size: 0.85rem;
-  font-weight: 600;
 }
