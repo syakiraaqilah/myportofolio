@@ -32,7 +32,7 @@ def show_skills(request):
     )
 
     category_label = Case(
-        When(category='programming', then=Value('Programming & Web Tech')),
+        When(category='programming', then=Value('Programming & Web')),
         When(category='design_editing', then=Value('Design & Editing')),
         When(category='dev_tools', then=Value('Dev Tools')),
         output_field=CharField(),
