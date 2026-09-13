@@ -30,6 +30,9 @@ SECRET_KEY = 'django-insecure-7@v*a4$&9%#ls4mqk9g4_c_6ea1y*^@$1#@!ok@=b56e#kqr3d
 DEBUG = True
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "syakira-aqilah-myportofolio.pws.cs.ui.ac.id"]
+CSRF_TRUSTED_ORIGINS = [
+    'https://syakira-aqilah-myportofolio.pws.cs.ui.ac.id',
+]
 PRODUCTION = os.getenv('PRODUCTION', 'False').lower() == 'true'
 
 # Application definition
