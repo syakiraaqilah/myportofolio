@@ -67,3 +67,38 @@ Selanjutnya, berikut adalah spesifikasi bantuan dari AI yang saya gunakan:
 5. Analisis detail alur routing URL hingga display html dan css di layar
 
 `Log prompting masih sama seperti sebelumnya.`
+
+### Tugas 3
+
+1. Penggunaan <ModelForm> di sini akan memudahkan kita; dalam hal ini, bisa dikatakan kita memanfaatkan 'tools' yang sudah ada demi pekerjaan yang lebih optimal. Django akan mengendalikan sebagian besar proses di belakang layar sehingga kita tidak perlu repot-repot menanganinya. Adapun menurut dokumentasi Django sendiri, tujuan penggunaan CSRF token adalah untuk proteksi dari Cross Site Request Forgeries; suatu jenis penyerangan siber. Pada dasarnya, ini berfungsi untuk mencegah penyerang aplikasi mengubah request yang awalnya ke server Django menjadi ke suatu API yang berbahaya dan mengirimkan data request kita ke mereka.
+
+2. JSON lebih disukai karena ukurannya yang lebih ringkas, parser yang sangat cepat, dan integrasi yang sangat natural dengan JavaScript di sisi frontend. Selain itu, format JSON sangat _readable_ baik bagi manusia maupun mesin.
+
+3. **Alur lengkap**: Awalnya, akan dilakukan query database (di <get_projects_json> milik <views.py>) dengan hasil berupa QuerySet object Python (implementasi: <Project.objects.all()>). Karena object python ini memiliki struktur kompleks yang tidak bersifat universal, perlu adanya proses penerjemahan (dalam hal ini adalah _serialization_). Alasan kita perlu melakukan proses ini adalah untuk mentranslasi object Python menjadi suatu format sistematis (dalam hal ini adalah JSON) yang bersifat universal sehingga dapat dimengerti oleh siapa saja. Tanpa proses ini, objek Python tidak akan diterjemahkan; strukturnya yang kompleks tidak dapat dimengerti secara universal (implementasi: <serializers.serialize("json", projects)>). Nilai dari setiap fieldnya akan diekstraksi dan dikonversi ke tipe yang kompatibel di format JSON sebelum kemudian setiap instancenya akan disusun dalam dictionary terpisah yang nantinya akan dibungkus dalam satu list.
+
+Adapun sesuai dengan <views.py>:
+<return HttpResponse(projects_json, content_type="application/json")>
+json_response di sini adalah suatu HttpResponse yang memberi tahu bahwa isi response tersebut adalah JSON sehingga browser tidak salah interpretasi. Response dapat dikirim langsung sebagai public API, atau dalam konteks tugas ini dipanggil/digunakan di <show_projects> untuk deserialization (parsing JSON untuk mengambil instance Python) dan kemudian di-render dan digunakan dalam loop di <project.html>. 
+
+## Penggunaan AI
+
+AI yang saya gunakan adalah Claude Sonnet 5. Berikut alur prompting yang saya terapkan:
+
+1. Menganalisis struktur template html dan penggunaan form
+2. Bertanya mengenai penerapan aturan yang tepat untuk merealisasikan rancangan desain web serta mengecek kesalahan kode
+3. Menganalisis jawaban dan rangkaian kode yang dicontohkan untuk kemudian diimplementasi dan dimodifikasi secara mandiri
+
+Selanjutnya, berikut adalah spesifikasi bantuan dari AI yang saya gunakan:
+
+1. Analisis penggunaan dan perbandingan model form untuk project dan experience termasuk implementasi kodenya dalam file-file terkait
+2. Analisis logika date input dan display warna yang sesuai
+3. Analisis logika select widget dan restyling sesuai tema web
+4. Analisis pengecekan error dalam kode
+5. Analisis perubahan logika css untuk desain web berdasarkan detail preferensi
+6. Analisis konsep serialization dan struktur JSON
+
+`Note: Log prompting masih sama seperti sebelumnya.`
+
+
+
+

@@ -88,7 +88,7 @@ def get_projects_json(request):
     return HttpResponse(projects_json, content_type="application/json")
 
 def delete_project(request, project_id):
-    project = get_object_or_404(Project, pk=project_id)
+    project = get_object_or_404(Project, id=project_id)
 
     if request.method == "POST":
         project.delete()
@@ -158,7 +158,7 @@ def get_experiences_json(request):
     return HttpResponse(experiences_json, content_type="application/json")
 
 def delete_experience(request, experience_id):
-    experience = get_object_or_404(Experience, pk=experience_id)
+    experience = get_object_or_404(Experience, id=experience_id)
 
     if request.method == "POST":
         experience.delete()
