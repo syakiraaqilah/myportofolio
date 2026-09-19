@@ -562,6 +562,54 @@ h1, h2, .brand {
   box-shadow: 0 0 14px rgba(168, 85, 247, 0.25);
 }
 
+.form-group select {
+  width: 100%;
+  padding: 0.8rem 2.5rem 0.8rem 0.9rem;
+  color: var(--text-primary);
+  font: inherit;
+  background-color: rgba(10, 8, 23, 0.5);
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%239a94b8'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpolyline%20points='6%209%2012%2015%2018%209'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 14px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-image 0.2s ease;
+}
+
+.form-group select:focus {
+  border-color: var(--neon-purple);
+  box-shadow: 0 0 14px rgba(168, 85, 247, 0.25);
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23a855f7'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpolyline%20points='6%209%2012%2015%2018%209'%3E%3C/polyline%3E%3C/svg%3E");
+}
+
+.form-group select option {
+  background-color: var(--bg-panel);
+  color: var(--text-primary);
+}
+
+.form-group input[type="date"] {
+  color: var(--text-dim);
+  position: relative;
+  color-scheme: light;
+}
+
+.form-group input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(5);
+  cursor: pointer;
+  opacity: 0.75;
+  transition: opacity 0.2s ease;
+}
+
+.form-group input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
 .form-error {
   color: var(--neon-pink);
   font-size: 0.85rem;
@@ -585,13 +633,13 @@ h1, h2, .brand {
   background: transparent;
   border-radius: 999px;
   border: 1px solid rgba(0, 229, 255, 0.4);
-  box-shadow: 0 0 8px rgba(0, 229, 255, 0.2);
+  box-shadow: 0 0 16px rgba(0, 229, 255, 0.2);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 8px rgba(0, 229, 255, 0.484);
+  box-shadow: 0 0 16px rgba(0, 229, 255, 0.55);
 }
 
 .button-search {
@@ -607,19 +655,23 @@ h1, h2, .brand {
 
 
 .button-danger:hover {
-  box-shadow: 0 0 8px rgba(255, 0, 0, 0.872);
+  box-shadow: 0 0 16px rgba(255, 0, 0, 0.872);
 }
 
 .button-secondary {
   background: transparent;
   border-color: var(--glass-border);
-  color: var(--neon-cyan);
-  border: 1px solid rgba(0, 229, 255, 0.4);
-  box-shadow: 0 0 8px rgba(0, 229, 255, 0.2);
+  color: var(--neon-pink);
+  border: 1px solid rgba(255, 79, 216, 0.4);
+  box-shadow: 0 0 8px rgba(255, 79, 216, 0.2);
 }
 
 .button-secondary:hover {
-  box-shadow: 0 0 8px rgba(0, 229, 255, 0.411);
+  box-shadow: 0 0 16px rgba(255, 79, 216, 0.55);
+}
+
+.button-secure {
+  margin-right: 1.25rem;
 }
 
 /* Project Section */
@@ -783,6 +835,10 @@ h1, h2, .brand {
     font-size: 1.8rem;
     line-height: 1;
     cursor: pointer;
+}
+
+.project-delete-modal__confirm {
+  color: var(--text-muted);
 }
 
 .project-delete-modal__actions {

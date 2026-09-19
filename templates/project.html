@@ -12,7 +12,7 @@
                     <a href="{% url 'main:create_project' %}"
                        class="button project-add-button">
                         <span aria-hidden="true">+</span>
-                        Tambah Project
+                        Add Project
                     </a>
                 </div>
                 <form method="get"
@@ -21,10 +21,10 @@
                     <input type="search"
                            name="title"
                            value="{{ title_query }}"
-                           placeholder="Cari berdasarkan nama project"
+                           placeholder="Search's project name"
                            class="project-search__input"
-                           aria-label="Cari berdasarkan nama proyek">
-                    <button type="submit" class="button button-search">Cari</button>
+                           aria-label="Search project by title">
+                    <button type="submit" class="button button-search">Search</button>
                 </form>
                 <div class="experience-grid project-grid">
                     {% for project in project_list %}
@@ -40,17 +40,18 @@
                             <div class="project-card-actions">
                                 <div class="project-actions">
                                     {% if project.project_url %}
-                                        <a href="{{ project.project_url }}" class="button">Lihat Project</a>
+                                        <a href="{{ project.project_url }}" class="button">View Project</a>
                                     {% endif %}
+                                    <a href="{% url 'main:edit_project' project.id %}" class="button button-secondary">Edit</a>
                                     {% include "components/project_delete_modal.html" with project=project %}
                                 </div>
                             </div>
                         </article>
                     {% empty %}
                         {% if title_query %}
-                            <p class="empty-state">Tidak ada project dengan nama tersebut.</p>
+                            <p class="empty-state">Project cannot be found</p>
                         {% else %}
-                            <p class="empty-state">Belum ada project yang ditambahkan.</p>
+                            <p class="empty-state">No projects have been added yet</p>
                         {% endif %}
                     {% endfor %}
                 </div>

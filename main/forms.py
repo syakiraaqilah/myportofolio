@@ -1,6 +1,6 @@
-from django.forms import ModelForm, TextInput, Textarea, URLInput
+from django.forms import ModelForm, TextInput, Textarea, URLInput, Select, DateInput
 
-from main.models import Project
+from main.models import Project, Experience
 
 class ProjectForm(ModelForm):
     class Meta:
@@ -14,11 +14,11 @@ class ProjectForm(ModelForm):
         ]
 
         labels = {
-            "title": "Nama Proyek",
-            "description": "Deskripsi Proyek",
-            "tech_stack": "Teknologi yang Digunakan",
-            "project_url": "URL Proyek",
-            "project_image_url": "URL Gambar Proyek",
+            "title": "Project's name",
+            "description": "Project's Description",
+            "tech_stack": "Technology Used",
+            "project_url": "Project's URL",
+            "project_image_url": "Project's Image URL",
         }
 
         widgets = {
@@ -50,3 +50,63 @@ class ProjectForm(ModelForm):
                 }
             ),
         }
+
+class ExperienceForm(ModelForm):
+    class Meta: 
+        model = Experience
+
+        fields = [
+            "title",
+            "description",
+            "category",
+            "thumbnail",
+            "started_at",
+            "ended_at",
+        ]
+
+        labels = {
+            "title": "Experience's name",
+            "description": "Experience's Description",
+            "category": "Experience's Category",
+            "thumbnail": "Documentation",
+            "started_at": "Start Date",
+            "ended_at": "End Date",
+        }
+
+        widgets = {
+            "title": TextInput(
+                attrs = {
+                    "placeholder": "Enter your experience",
+                    "maxlength": 255,
+                }
+            ),
+            "description": Textarea(
+                attrs = {
+                    "placeholder": "Describe your contribution",
+                    "rows": 3,
+                }
+            ),
+            "category": Select(
+                attrs={
+                    "class": "form-select",
+                }
+            ),
+            "thumbnail": URLInput(
+                attrs={
+                    "placeholder": "https://drive.google.com/thumbnail?id=...&sz=w1000",
+                }
+            ),
+            "started_at": DateInput(
+                attrs={
+                    "type": "date"
+                }
+            ),
+            "ended_at": DateInput(
+                attrs={
+                    "type": "date"
+                },
+                format="%Y-%m-%d"
+            ),
+        }
+
+        

@@ -1,19 +1,19 @@
 {% extends "base.html" %}
 {% block meta %}
-    <title>Add Project - {{ name }}</title>
+    <title>Add Experience - {{ name }}</title>
 {% endblock meta %}
 {% block content %}
     <main>
         <section class="projects-section">
             <div class="container">
                 <p class="section-kicker">
-                    {% if project %}—Refine Your Project—{% else %}—Build Something New—{% endif %}
+                    {% if experience %}—Update Your Journey—{% else %}—Journey So Far—{% endif %}
                 </p>
                 <h1 class="section-title">
-                    {% if project %}Edit Project{% else %}Add Project{% endif %}
+                    {% if experience %}Edit Experience{% else %}Add Experience{% endif %}
                 </h1>
                 <form method="post"
-                      action="{% if project %}{% url 'main:edit_project' project.id %}{% else %}{% url 'main:create_project' %}{% endif %}"
+                      action="{% if experience %}{% url 'main:edit_experience' experience.id %}{% else %}{% url 'main:create_experience' %}{% endif %}"
                       class="project-form">
                     {% csrf_token %}
                     {% for field in form %}
@@ -25,11 +25,11 @@
                             {% endfor %}
                         </div>
                     {% endfor %}
-                    <div class="project-form-actions">
+                    <div class="experience-form-actions">
                         <button type="submit" class="button button-secure">
-                            {% if project %}Save Changes{% else %}Add Project{% endif %}
+                            {% if experience %}Save Changes{% else %}Add Experience{% endif %}
                         </button>
-                        <a href="{% url 'main:show_projects' %}" class="button button-danger">Cancel</a>
+                        <a href="{% url 'main:show_experience' %}" class="button button-danger">Cancel</a>
                     </div>
                 </form>
             </div>
