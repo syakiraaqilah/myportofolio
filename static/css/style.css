@@ -114,42 +114,65 @@ h1, h2, .brand {
   transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
 }
 
-.nav-frame--profile, 
-.nav-frame--projects {
+.nav-frame--cyan {
   color: var(--neon-cyan);
   border: 1px solid rgba(0, 229, 255, 0.4);
   box-shadow: 0 0 8px rgba(0, 229, 255, 0.2);
 }
 
-.nav-frame--skills {
+.nav-frame--purple {
   color: var(--neon-purple);
   border: 1px solid rgba(168, 85, 247, 0.4);
   box-shadow: 0 0 8px rgba(168, 85, 247, 0.2);
 }
 
-.nav-frame--experience {
+.nav-frame--pink {
   color: var(--neon-pink);
   border: 1px solid rgba(255, 79, 216, 0.4);
   box-shadow: 0 0 8px rgba(255, 79, 216, 0.2);
 }
 
+.nav-auth--purple {
+  background: rgba(155, 48, 255, 0.523);
+  color: var(--text-primary);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  box-shadow: 0 0 8px rgba(168, 85, 247, 0.2);
+}
+
+.nav-auth--pink {
+  background: rgba(251, 5, 198, 0.737);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 79, 216, 0.4);
+  box-shadow: 0 0 8px rgba(255, 79, 216, 0.2);
+}
+
+
 .nav-frame:hover {
   transform: translateY(-2px);
 }
 
-.nav-frame--profile:hover, 
-.nav-frame--projects:hover {
+.nav-frame--cyan:hover {
   background: rgba(0, 229, 255, 0.12);
   box-shadow: 0 0 16px rgba(0, 229, 255, 0.55);
 }
 
-.nav-frame--skills:hover {
+.nav-frame--purple:hover {
   background: rgba(168, 85, 247, 0.12);
   box-shadow: 0 0 16px rgba(168, 85, 247, 0.55);
 }
 
-.nav-frame--experience:hover {
+.nav-frame--pink:hover {
   background: rgba(255, 79, 216, 0.12);
+  box-shadow: 0 0 16px rgba(255, 79, 216, 0.55);
+}
+
+.nav-auth--purple:hover {
+  background: rgba(190, 121, 255, 0.523);
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.55);
+}
+
+.nav-auth--pink:hover {
+  background: rgba(254, 130, 227, 0.619);
   box-shadow: 0 0 16px rgba(255, 79, 216, 0.55);
 }
 
@@ -943,5 +966,27 @@ h1, h2, .brand {
     align-items: flex-start;
     gap: 0.25rem;
   }
+
+  .star-form {
+    display: inline;
+}
+
+.button-star {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--ink);
+}
+
+.button-star.is-starred {
+    background: var(--accent);
+}
+
+.star-count {
+    padding: 0.05rem 0.4rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.25);
+    font-size: 0.8rem;
+}
 
 }

@@ -1,13 +1,18 @@
-from django.shortcuts import render
 from django.db.models import Case, When, Value, IntegerField, CharField
 from main.models import Experience, Skill, Project
 from django.contrib import messages
+from django.contrib.auth import login, logout
 from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from main.forms import ProjectForm, ExperienceForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.decorators import login_required  
+from django.core.exceptions import PermissionDenied       
+import datetime
 
 def show_main(request):
+    last_login = request.COOKIES.get('last_login', 'No login session yet / Cookie not found')
     context = {
         "name": "Syakira",
         "npm": "2506541622",
@@ -17,6 +22,7 @@ def show_main(request):
             " on an endless quest to master new tech. Fueled by curiosity,"
             " driven by code, and always ready to debug any challenge."
         ),
+        "last_login": last_login,
     }
     return render(request, "index.html", context)
 
@@ -46,7 +52,12 @@ def show_skills(request):
     }
     return render(request, "skills.html", context)
 
+@login_required(login_url="/login/")  
 def create_project(request):
+
+    if not request.user.is_superuser:
+        raise PermissionDenied
+
     form = ProjectForm(request.POST or None)
 
     if request.method == "POST" and form.is_valid():
@@ -84,10 +95,15 @@ def get_projects_json(request):
     if title_query:
         projects = projects.filter(title__icontains=title_query)
 
-    projects_json = serializers.serialize("json", projects)
+    projects_json = serializers.serialize("json", projects, use_natural_foreign_keys=True)
     return HttpResponse(projects_json, content_type="application/json")
 
+@login_required(login_url="/login/") 
 def delete_project(request, project_id):
+
+    if not request.user.is_superuser:
+        raise PermissionDenied
+
     project = get_object_or_404(Project, id=project_id)
 
     if request.method == "POST":
@@ -185,3 +201,51 @@ def edit_experience(request, experience_id):
         "experience": experience
         }
     return render(request, "experience_form.html", context)
+
+def register(request):
+    form = UserCreationForm(request.POST or None)
+
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Akun berhasil dibuat. Silakan login.")
+        return redirect("main:login")
+
+    context = {
+        "name": "Syakira",
+        "form": form,
+    }
+    return render(request, "register.html", context)
+
+def login_user(request):
+    form = AuthenticationForm(request, data=request.POST or None)
+
+    if request.method == "POST" and form.is_valid():
+        login(request, form.get_user())
+        response = redirect("main:show_main")
+        response.set_cookie('last_login', datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        return response
+
+
+    context = {
+        "name": "Syakira",
+        "form": form,
+    }
+    return render(request, "login.html", context)
+
+def logout_user(request):
+    logout(request)
+    response = redirect("main:show_main")
+    response.delete_cookie('last_login')
+    return response
+
+@login_required(login_url="/login/")
+def toggle_star(request, project_id):
+    project = get_object_or_404(Project, pk=project_id)
+
+    if request.method == "POST":
+        if request.user in project.starred_by.all():
+            project.starred_by.remove(request.user)
+        else:
+            project.starred_by.add(request.user)
+
+    return redirect("main:show_projects")
