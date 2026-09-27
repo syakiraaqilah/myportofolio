@@ -6,15 +6,59 @@ Kelas : PBP B
 
 Jurusan : Ilmu Komputer
 
-### Tugas 1
+# Proyek Web Portofolio - Tugas Individu Pemrograman Berbasis Platform
 
-1. Saya menggunakan sejumlah elemen semantik mulai dari <header>, <nav>, <footer>, <main>, dan <section>. Di antara ketiga elemen yang disebutkan pada soal, saya hanya menggunakan <section>. Alasan utamanya adalah karena web yang saya buat hanya memuat profile (section hero) dan skills (section skills). Keduanya adalah entitas yang tidak independen sehingga penggunaan <section> merupakan langkah yang tepat. Skills di sini membutuhkan informasi dari hero untuk mendefinisikan identitas pemilik skill sehingga tidak tepat untuk menggunakan <article>. Di sisi lain, penggunaan <aside> juga tidak tepat karena profil/identitas dan skill yang saya spesifikasikan dalam <section> di sini merupakan konten penting yang tidak bisa diabaikan; esensinya tinggi karena menopang tujuan utama dibuatnya portofolio ini (memaparkan informasi diri dan skill-skill yang menjual).
+## Deskripsi Proyek
+Website ini merupakan web portofolio pribadi yang didesain interaktif dan dikembangkan secara berkelanjutan sebagai pemenuhan kualifikasi tugas pekanan mata kuliah PBP.
+
+### Setup & Instalasi
+*Karena web ini dimodifikasi dan dikembangkan secara berkelanjutan, berikut langkah untuk setup versi terbaru*
+1. Clone repository ini dan pindah ke direktori yang sesuai
+    ```
+    git clone <https://github.com/syakiraaqilah/myportofolio>
+    cd <myportofolio>
+    ```
+2. Buat dan aktifkan virtual environment 
+    - Windows:
+    ```
+    python -m venv env
+    env\Scripts\activate
+    ```
+
+    - UNIX (macOS, Linux):
+    ```
+    python3 -m venv env 
+    source env/bin/activate
+    ```
+3. Install semua dependencies
+    ```
+    pip install -r requirements.txt
+    ```
+4. Lakukan migrasi database
+    ```
+    python manage.py migrate
+    ```
+5. Jalankan server lokal
+    ```
+    python manage.py runserver
+    ```
+6. Buka http://localhost:8000/ di browser untuk melihat tampilan web
+
+### Log Proses Pekanan
+- Pekan 1: Inisialisasi web statis dengan HTML5 dan CSS3 (AI disclosure di Tugas 1)
+- Pekan 2: Implementasi arsitektur MVT pada Django (AI disclosure di Tugas 2; log sama dengan Tugas 1)
+- Pekan 3: Implementasi form & data delivery (AI disclosure di Tugas 3; log sama dengan Tugas 1)
+- Pekan 4: Implementasi authentication, session, dan cookie (AI disclosure di Tugas 4)
+
+## Tugas 1
+
+1. Saya menggunakan sejumlah elemen semantik mulai dari header, nav, footer, main, dan section. Di antara ketiga elemen yang disebutkan pada soal, saya hanya menggunakan section. Alasan utamanya adalah karena web yang saya buat hanya memuat profile (section hero) dan skills (section skills). Keduanya adalah entitas yang tidak independen sehingga penggunaan section merupakan langkah yang tepat. Skills di sini membutuhkan informasi dari hero untuk mendefinisikan identitas pemilik skill sehingga tidak tepat untuk menggunakan article. Di sisi lain, penggunaan aside juga tidak tepat karena profil/identitas dan skill yang saya spesifikasikan dalam section di sini merupakan konten penting yang tidak bisa diabaikan; esensinya tinggi karena menopang tujuan utama dibuatnya portofolio ini (memaparkan informasi diri dan skill-skill yang menjual).
 
 2. Saya sedikit kesulitan karena terdapat banyak aturan dan sintaks yang baru saya temui, mengingat ini adalah pertama kalinya saya menyentuh HTML dan CSS. Saya cukup tertantang saat ingin memanifestasikan desain simpel web yang ada di kepala saya; contohnya adalah saat saya menginginkan desain elemen yang menyamping dan juga berderet ke bawah, kemudian juga masalah padding dan ukuran elemen. Untuk logika umumnya, saya meminta arahan dari AI seperti sintaks atau aturan CSS yang mengizinkan perubahan tata letak dan ukuran. Selanjutnya, saya menganalisis potongan kode dan penjelasan yang diberikan, mengajukan pertanyaan dan sanggahan sebelum kemudian memodifikasinya sesuka saya. Saya sendiri juga mengevaluasi tampilan desktop dan mobile dengan toggle device toolbar, kemudian mencoba memngatur layout dengan mengubah display dan padding. Saya menentukan elemen yang perlu diubah ukuran maupun posisinya dengan memanfaatkan toggle device tersebut, kemudian mengatur ulang display, flex, dan justify-content.
 
 3. Banyak batasan yang saya rasakan karena ini hanya sebagai web yang menyajikan informasi saya tanpa interaksi yang bermakna dengan orang yang melihatnya. Fungsionalitas yang ingin saya tambahkan di antaranya adalah fitur pencarian dan kontak (komentar dan kontak pribadi).
 
-## Penggunaan AI
+### Penggunaan AI
 
 AI yang saya gunakan adalah Claude Sonnet 5. Berikut alur prompting yang saya terapkan:
 
@@ -25,21 +69,21 @@ AI yang saya gunakan adalah Claude Sonnet 5. Berikut alur prompting yang saya te
 Selanjutnya, berikut adalah spesifikasi bantuan dari AI yang saya gunakan:
 
 1. Alur untuk mengganti font dan efek tipografi
-2. Cara menambahkan subheadline dan keterkaitannya dengan penggunaan <div>
+2. Cara menambahkan subheadline dan keterkaitannya dengan penggunaan div
 3. Mengubah background menjadi memiliki efek polkadot
 4. Aturan membungkus teks dalam suatu box/frame/highlight sesuai properti CSS
-5. Analisis penggunaan <ul>, <li>, dan <span>
+5. Analisis penggunaan ul, li, dan span
 6. Properti untuk menerapkan transformasi dan rotasi pada teks dan frame
 7. Penggunaan efek saat hover dan active
 8. Logika mengatur ukuran gambar
-9. Analisis desain yang tepat untuk <section> skills; apakah perlu memisahkan antara tools dan programming language
+9. Analisis desain yang tepat untuk section skills; apakah perlu memisahkan antara tools dan programming language
 10. Analisis perbedaan dan penggunaan elemen semantik HTML
 11. Analisis alternatif untuk perubahan struktur di desktop dan mobile
 
-Log prompting: https://claude.ai/share/4407a4f3-24c2-42c8-b382-3c8e11c135b9
+```Log prompting:https://claude.ai/share/4407a4f3-24c2-42c8-b382-3c8e11c135b9```
 
 
-### Tugas 2
+## Tugas 2
 
 1. Alur yang terjadi: saat user menekan/mengakses URL melalui browser, selanjutnya request akan dikirim ke server Django. Di sini, Django memetakan URL ke View melalui <urls.py>. Adapun <urls.py> di sini dibedakan menjadi <urls.py> aplikasi & projek. <urls.py> projek yang akan mengecek pertama kali;
 *path('admin/', admin.site.urls)*
@@ -50,7 +94,7 @@ Log prompting: https://claude.ai/share/4407a4f3-24c2-42c8-b382-3c8e11c135b9
 
 3. <makemigrations> adalah ketika Django membandingkan status model saat ini dan migrasi sebelumnya; apakah terdapat perubahan atau tidak, kemudian membuat suatu file instruksi atau migration file terkait perubahan yang perlu diimplementasikan. Setelah itu barulah <migrate> yang akan menjalankan instruksi dari migration file yang dibuat oleh <makemigrations> ke database. 
 
-## Penggunaan AI
+### Penggunaan AI
 
 AI yang saya gunakan adalah Claude Sonnet 5. Berikut alur prompting yang saya terapkan:
 
@@ -68,7 +112,7 @@ Selanjutnya, berikut adalah spesifikasi bantuan dari AI yang saya gunakan:
 
 `Log prompting masih sama seperti sebelumnya.`
 
-### Tugas 3
+## Tugas 3
 
 1. Penggunaan <ModelForm> di sini akan memudahkan kita; dalam hal ini, bisa dikatakan kita memanfaatkan 'tools' yang sudah ada demi pekerjaan yang lebih optimal. Django akan mengendalikan sebagian besar proses di belakang layar sehingga kita tidak perlu repot-repot menanganinya. Adapun menurut dokumentasi Django sendiri, tujuan penggunaan CSRF token adalah untuk proteksi dari Cross Site Request Forgeries; suatu jenis penyerangan siber. Pada dasarnya, ini berfungsi untuk mencegah penyerang aplikasi mengubah request yang awalnya ke server Django menjadi ke suatu API yang berbahaya dan mengirimkan data request kita ke mereka.
 
@@ -80,7 +124,7 @@ Adapun sesuai dengan <views.py>:
 <return HttpResponse(projects_json, content_type="application/json")>
 json_response di sini adalah suatu HttpResponse yang memberi tahu bahwa isi response tersebut adalah JSON sehingga browser tidak salah interpretasi. Response dapat dikirim langsung sebagai public API, atau dalam konteks tugas ini dipanggil/digunakan di <show_projects> untuk deserialization (parsing JSON untuk mengambil instance Python) dan kemudian di-render dan digunakan dalam loop di <project.html>. 
 
-## Penggunaan AI
+### Penggunaan AI
 
 AI yang saya gunakan adalah Claude Sonnet 5. Berikut alur prompting yang saya terapkan:
 
@@ -99,6 +143,24 @@ Selanjutnya, berikut adalah spesifikasi bantuan dari AI yang saya gunakan:
 
 `Note: Log prompting masih sama seperti sebelumnya.`
 
+## Tugas 4
 
+### Penggunaan AI
+> Saya menggunakan Claude Sonnet 5 sebagai tools untuk membantu saya dalam memahami konsep & debugging kode untuk penyelesaian tugas 4. 
+
+Berikut alur prompting yang saya terapkan:
+
+1. Menganalisis struktur template html, main, beserta logika yang diterapkan untuk _permission_
+2. Mengecek kesalahan logika/struktur kode
+3. Menganalisis jawaban dan rangkaian kode yang dicontohkan untuk kemudian diimplementasi dan dimodifikasi secara mandiri
+
+Selanjutnya, berikut adalah spesifikasi bantuan dari AI yang saya gunakan:
+
+1. Analisis implementasi *group* & *permission* serta penggunaan *User* atau *AbstractUser*
+2. Analisis struktur kode template html dan view untuk perizinan penggunaan fitur / melihat button tertentu
+3. Analisis pengecekan error dalam kode
+5. Analisis alokasi *user* dalam *group* melalui Django admin
+
+`Log AI: https://claude.ai/share/e93a1214-4db9-4813-8d73-d3aafce5100b`
 
 
