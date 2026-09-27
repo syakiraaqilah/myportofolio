@@ -8,7 +8,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from main.forms import ProjectForm, ExperienceForm
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.decorators import login_required  
-from django.core.exceptions import PermissionDenied       
+from django.core.exceptions import PermissionDenied   
+from django.contrib.auth.decorators import permission_required
 import datetime
 
 def show_main(request):
@@ -52,9 +53,8 @@ def show_skills(request):
     }
     return render(request, "skills.html", context)
 
-@login_required(login_url="/login/")  
+@login_required(login_url="/login/")
 def create_project(request):
-
     if not request.user.is_superuser:
         raise PermissionDenied
 
@@ -98,12 +98,11 @@ def get_projects_json(request):
     projects_json = serializers.serialize("json", projects, use_natural_foreign_keys=True)
     return HttpResponse(projects_json, content_type="application/json")
 
-@login_required(login_url="/login/") 
+@login_required(login_url="/login/")
+
 def delete_project(request, project_id):
-
     if not request.user.is_superuser:
-        raise PermissionDenied
-
+            raise PermissionDenied
     project = get_object_or_404(Project, id=project_id)
 
     if request.method == "POST":
@@ -113,6 +112,7 @@ def delete_project(request, project_id):
 
     return redirect("main:show_projects")
 
+@permission_required("main.edit_project", login_url="/login/", raise_exception=True)
 def edit_project(request, project_id):
     project = get_object_or_404(Project, id=project_id)
 
@@ -132,7 +132,11 @@ def edit_project(request, project_id):
         }
     return render(request, "projects_form.html", context)
 
+@login_required(login_url="/login/")
 def create_experience(request):
+    if not request.user.is_superuser:
+                raise PermissionDenied
+    
     form = ExperienceForm(request.POST or None)
 
     if request.method == "POST" and form.is_valid():
@@ -170,10 +174,14 @@ def get_experiences_json(request):
     if title_query:
         experiences = experiences.filter(title__icontains=title_query)
 
-    experiences_json = serializers.serialize("json", experiences)
+    experiences_json = serializers.serialize("json", experiences, use_natural_foreign_keys=True)
     return HttpResponse(experiences_json, content_type="application/json")
 
+@login_required(login_url="/login/")
 def delete_experience(request, experience_id):
+    if not request.user.is_superuser:
+                raise PermissionDenied
+    
     experience = get_object_or_404(Experience, id=experience_id)
 
     if request.method == "POST":
@@ -183,6 +191,7 @@ def delete_experience(request, experience_id):
 
     return redirect("main:show_experience")
 
+@permission_required("main.edit_experience", login_url="/login/", raise_exception=True)
 def edit_experience(request, experience_id):
     experience = get_object_or_404(Experience, id=experience_id)
 
@@ -239,7 +248,7 @@ def logout_user(request):
     return response
 
 @login_required(login_url="/login/")
-def toggle_star(request, project_id):
+def toggle_star_project(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
 
     if request.method == "POST":
@@ -249,3 +258,16 @@ def toggle_star(request, project_id):
             project.starred_by.add(request.user)
 
     return redirect("main:show_projects")
+
+@login_required(login_url="/login/")
+def toggle_star_experience(request, experience_id):
+    experience = get_object_or_404(Experience, pk=experience_id)
+
+    if request.method == "POST":
+        if request.user in experience.starred_by.all():
+            experience.starred_by.remove(request.user)
+        else:
+            experience.starred_by.add(request.user)
+
+    return redirect("main:show_experience")
+
