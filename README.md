@@ -159,8 +159,39 @@ Selanjutnya, berikut adalah spesifikasi bantuan dari AI yang saya gunakan:
 1. Analisis implementasi *group* & *permission* serta penggunaan *User* atau *AbstractUser*
 2. Analisis struktur kode template html dan view untuk perizinan penggunaan fitur / melihat button tertentu
 3. Analisis pengecekan error dalam kode
-5. Analisis alokasi *user* dalam *group* melalui Django admin
+4. Analisis alokasi *user* dalam *group* melalui Django admin
 
 `Log AI: https://claude.ai/share/e93a1214-4db9-4813-8d73-d3aafce5100b`
 
 
+## Tugas 5
+
+1. Jelaskan apa itu debouncing dan mengapa teknik ini penting diterapkan pada fitur pencarian yang menggunakan AJAX!
+> **Debouncing** di sini merupakan teknik untuk menunda suatu fungsi hingga waktu jeda yang diterapkan berlalu tanpa _event_ baru. Menilik fungsi *fetchProjects()* dan *fetchExperiences()* yang langsung pada _event_ **input** (sehingga membuat browser mengirim _request_ per karakter),  **Debouncing** di sini penting supaya selama _user_ mengetik di kolom pencarian, _timer_ akan di-_reset_; ini mengimplikasi _browser_ akan men-_delay_ API _request_ dan hanya mengirim _request_ setelah _user_ berhenti mengetik sejenak (terdapat jeda waktu). Dengan demikian, hal ini akan mencegah _server traffic_ dan dan menjaga agar UI tetap mulus.
+
+2. Jelaskan fungsi dari penggunaan await ketika kita menggunakan fetch()! Apa yang akan terjadi jika kita tidak menggunakan await?
+>  **fetch()** di sini merupakan API untuk _HTTP request_ dengan sintaks yang lebih sederhana dan mengembalikan sebuah **Promise**. **Promise** sendiri akan selesai saat _header_ respons diterima atau bisa juga ditolak jika ada _network error_. Dengan menggunakan _keyword_ **await** sebelum **Promise**, fungsi akan ditunda hingga **Promise** _settle_ sebelum kemudian mengembalikan objek **Response** sebagai hasil. Tanpa **await**, variabel hanya berisi **Promise** (masih _pending_), dan baris kode selanjutkan akan dijalankan dalam keadaan data belum tersedia. 
+
+3. Jelaskan apa itu serangan XSS (Cross-Site Scripting) dan mengapa data yang ditampilkan melalui AJAX/JavaScript lebih rentan terhadap serangan ini daripada data yang ditampilkan langsung melalui template Django!
+> **Cross-Site Scripting (XSS)** merupakan serangan ketika seseorang berhasil menyisipkan kode JavaScript miliknya ke dalam halaman web yang kemudian dijalankan di _browser_ _user_ lain. Salah satu jenisnya adalah _stored_ XSS, yaitu ketika kode berbahaya disimpan ke _database_ (misalnya sebagai judul suatu _project_) lalu ikut dijalankan setiap kali data tersebut ditampilkan. 
+
+> Template Django melakukan _auto-escaping_ pada setiap **{ variabel }**. Karakter seperti < dan > diubah menjadi &lt; dan &gt; sehingga browser menampilkannya sebagai teks biasa, bukan sebagai tag HTML. Nah, tetapi, perlindungan itu hilang karena peralihan ke AJAX. Pada **buildProjectCardElement(item)** dan **buildExperienceCardElement(item)**, data dari JSON disisipkan ke dalam _template_ literal lalu dipasang lewat **innerHTML**. Tidak ada Django yang melakukan _escaping_ sehingga _browser_ akan memperlakukan setiap tag HTML di dalam data sebagai kode sungguhan. Oleh karena itu, data yang ditampilkan melalui AJAX/JavaScript lebih rentan terhadap serangan XSS.
+
+> Demi mengatasi hal tersebut, kita harus melakukan _escaping_ HTML di JavaScript dengan menyiapkan fungsi **escapeHtml(value)** untuk mengubah karakter HTML menjadi serupa dengan yang di-_escape_ Django. Kemudian, setiap _value_ JSON yang disisipkan akan dibungkus dengan fungsi ini. 
+
+### Penggunaan AI
+> Saya menggunakan Claude Sonnet 5 sebagai tools untuk membantu saya dalam memahami konsep & _debugging_ kode untuk penyelesaian tugas 5. 
+
+Berikut alur prompting yang saya terapkan:
+
+1. Menganalisis struktur template html, main, beserta logika yang diterapkan untuk _web interactivity_ dengan JavaScript
+2. Mengecek kesalahan logika/struktur kode
+3. Menganalisis jawaban dan rangkaian kode yang dicontohkan untuk kemudian diimplementasi dan dimodifikasi secara mandiri
+
+Selanjutnya, berikut adalah spesifikasi bantuan dari AI yang saya gunakan:
+
+1. Analisis kebenaran implementasi notifikasi _toast_, AJAX, Debouncing, dan Modal Form
+2. Analisis struktur kode template, static, dan main untuk mengecek error dan inkonsistensi dalam kode
+3. Analisis kebenaran logika terkait urgensi penggunaan **await** pada **fetch()**
+
+`Log AI: https://claude.ai/share/3407de40-9394-4971-84f0-3fb0420727b0`

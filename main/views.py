@@ -2,7 +2,6 @@ from django.db.models import Case, When, Value, IntegerField, CharField
 from main.models import Experience, Skill, Project
 from django.contrib import messages
 from django.contrib.auth import login, logout
-from django.core import serializers
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from main.forms import ProjectForm, ExperienceForm
@@ -11,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied   
 from django.contrib.auth.decorators import permission_required
 from django.views.decorators.http import require_POST
+from django.utils import timezone
 import datetime
 
 def show_main(request):
@@ -84,7 +84,7 @@ def show_projects(request):
 
 def get_projects_json(request):
     title_query = request.GET.get("title", "").strip()
-    projects = Project.objects.prefetch_related('starred_by').all()
+    projects = Project.objects.prefetch_related('starred_by').order_by('title')
 
     if title_query:
         projects = projects.filter(title__icontains=title_query)
@@ -170,12 +170,13 @@ def show_experience(request):
     context = {
         "name": "Syakira",
         "title_query": title_query,
+        "form": ExperienceForm(),
     }
     return render(request, "experience.html", context)
 
 def get_experiences_json(request):
     title_query = request.GET.get("title", "").strip()
-    experiences = Experience.objects.prefetch_related('starred_by').all()
+    experiences = Experience.objects.prefetch_related('starred_by').order_by('-started_at')
     
     if title_query:
         experiences = experiences.filter(title__icontains=title_query)
@@ -193,9 +194,11 @@ def get_experiences_json(request):
                 "title": experience.title,
                 "description": experience.description,
                 "category": experience.category,
+                "category_display": experience.get_category_display(),
                 "thumbnail": experience.thumbnail,
-                "started_at": experience.started_at,
-                "ended_at": experience.ended_at,
+                "started_at": format_month_year(experience.started_at),
+                "ended_at": format_month_year(experience.ended_at),
+                "is_ongoing": experience.is_ongoing,
                 "star_count": starred_users.count(),
                 "is_starred": is_starred,
                 "starred_by_names": starred_by_names,
@@ -243,7 +246,7 @@ def register(request):
 
     if request.method == "POST" and form.is_valid():
         form.save()
-        messages.success(request, "Akun berhasil dibuat. Silakan login.")
+        messages.success(request, "Account created successfully. Please log in.")
         return redirect("main:login")
 
     context = {
@@ -315,3 +318,28 @@ def create_project_ajax(request):
         )
 
     return JsonResponse({"errors": form.errors.get_json_data()}, status=400)
+
+@require_POST
+def create_experience_ajax(request):
+    if not request.user.is_superuser:
+        return JsonResponse(
+            {"message": "Only owner can add experience."},
+            status=403,
+        )
+
+    form = ExperienceForm(request.POST)
+    if form.is_valid():
+        experience = form.save()
+        return JsonResponse(
+            {"message": "Experience has been successfully added.", "pk": str(experience.id)},
+            status=201,
+        )
+
+    return JsonResponse({"errors": form.errors.get_json_data()}, status=400)
+
+def format_month_year(value):
+    if value is None:
+        return None
+    if timezone.is_aware(value):
+        value = timezone.localtime(value)
+    return value.strftime("%b %Y")

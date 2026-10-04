@@ -3,6 +3,12 @@ from django.core.exceptions import ValidationError
 from django.utils.html import strip_tags
 from main.models import Project, Experience
 
+def clean_plain_text(value, label):
+    cleaned = strip_tags(value).strip()
+    if not cleaned:
+        raise ValidationError(f"{label} cannot be empty or only contain HTML tags.")
+    return cleaned
+
 class ProjectForm(ModelForm):
     class Meta:
         model = Project
@@ -31,7 +37,7 @@ class ProjectForm(ModelForm):
             ),
             "description": Textarea(
                 attrs={
-                    "placeholder": "Ceritakan Proyekmu",
+                    "placeholder": "Tell us about your project",
                     "rows": 3,
                 }
             ),
@@ -42,7 +48,7 @@ class ProjectForm(ModelForm):
             ),
             "project_url": URLInput(
                 attrs={
-                    "placeholder": "https://github.com/kakBurhan/burhanquestv4",
+                    "placeholder": "https://github.com/username/project",
                 }
             ),
             "project_image_url": URLInput(
@@ -53,16 +59,13 @@ class ProjectForm(ModelForm):
         }
 
     def clean_title(self):
-        title = strip_tags(self.cleaned_data["title"]).strip()
-        if not title:
-            raise ValidationError("Nama proyek tidak boleh hanya berisi tag HTML.")
-        return title
+        return clean_plain_text(self.cleaned_data["title"], "Project's name")
 
     def clean_tech_stack(self):
-        return strip_tags(self.cleaned_data["tech_stack"]).strip()
+        return clean_plain_text(self.cleaned_data["tech_stack"], "Technology used")
 
     def clean_description(self):
-        return strip_tags(self.cleaned_data["description"]).strip()
+        return clean_plain_text(self.cleaned_data["description"], "Description")
 
 class ExperienceForm(ModelForm):
     class Meta: 
@@ -123,4 +126,18 @@ class ExperienceForm(ModelForm):
             ),
         }
 
-        
+    def clean_title(self):
+        return clean_plain_text(self.cleaned_data["title"], "Experience's name")
+
+    def clean_description(self):
+        return clean_plain_text(self.cleaned_data["description"], "Description")
+
+    def clean_category(self):
+        return strip_tags(self.cleaned_data["category"]).strip()
+
+    def clean(self):
+        cleaned = super().clean()
+        started_at, ended_at = cleaned.get("started_at"), cleaned.get("ended_at")
+        if started_at and ended_at and ended_at < started_at:
+            self.add_error("ended_at", "End date cannot be earlier than the start date.")
+        return cleaned
