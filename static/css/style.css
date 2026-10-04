@@ -531,9 +531,9 @@ h1, h2, .brand {
 }
 
 .project-title {
-  color: var(--neon-cyan);
-  border: 1px solid rgba(0, 229, 255, 0.4);
-  box-shadow: 0 0 8px rgba(0, 229, 255, 0.2);
+  color: var(--neon-pink);
+  border: 1px solid rgba(255, 79, 216, 0.4);
+  box-shadow: 0 0 8px rgba(255, 79, 216, 0.2);
 }
 
 .project-form {
@@ -1172,8 +1172,8 @@ body:has(.project-form-modal:popover-open) {
 .project-form-modal__content h2 {
   margin: 0 2.75rem 1.25rem 0;
   font-size: 1.5rem;
-  color: var(--neon-cyan);
-  text-shadow: 0 0 12px rgba(0, 229, 255, 0.35);
+  color: var(--neon-purple);
+  text-shadow: 0 0 12px rgba(162, 0, 255, 0.35);
 }
 
 .project-form-modal__close {
