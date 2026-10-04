@@ -2,7 +2,6 @@ from django.db.models import Case, When, Value, IntegerField, CharField
 from main.models import Experience, Skill, Project
 from django.contrib import messages
 from django.contrib.auth import login, logout
-from django.core import serializers
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from main.forms import ProjectForm, ExperienceForm
@@ -85,7 +84,7 @@ def show_projects(request):
 
 def get_projects_json(request):
     title_query = request.GET.get("title", "").strip()
-    projects = Project.objects.prefetch_related('starred_by').all()
+    projects = Project.objects.prefetch_related('starred_by').order_by('title')
 
     if title_query:
         projects = projects.filter(title__icontains=title_query)
@@ -177,7 +176,7 @@ def show_experience(request):
 
 def get_experiences_json(request):
     title_query = request.GET.get("title", "").strip()
-    experiences = Experience.objects.prefetch_related('starred_by').all()
+    experiences = Experience.objects.prefetch_related('starred_by').order_by('-started_at')
     
     if title_query:
         experiences = experiences.filter(title__icontains=title_query)
@@ -247,7 +246,7 @@ def register(request):
 
     if request.method == "POST" and form.is_valid():
         form.save()
-        messages.success(request, "Akun berhasil dibuat. Silakan login.")
+        messages.success(request, "Account created successfully. Please log in.")
         return redirect("main:login")
 
     context = {
