@@ -11,6 +11,8 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import permission_required
 from django.views.decorators.http import require_POST
 from django.utils import timezone
+from main.utils import format_month_year
+from main.utils import can_edit_content
 import datetime
 
 def show_main(request):
@@ -79,6 +81,8 @@ def show_projects(request):
         "name": "Syakira",
         "title_query": title_query,
         "form": ProjectForm(),
+        "can_edit": can_edit_content(request.user),
+
     }
     return render(request, "project.html", context)
 
@@ -171,6 +175,8 @@ def show_experience(request):
         "name": "Syakira",
         "title_query": title_query,
         "form": ExperienceForm(),
+        "can_edit": can_edit_content(request.user),
+
     }
     return render(request, "experience.html", context)
 
@@ -336,10 +342,3 @@ def create_experience_ajax(request):
         )
 
     return JsonResponse({"errors": form.errors.get_json_data()}, status=400)
-
-def format_month_year(value):
-    if value is None:
-        return None
-    if timezone.is_aware(value):
-        value = timezone.localtime(value)
-    return value.strftime("%b %Y")

@@ -58,8 +58,10 @@
         const BASE_PROJECTS_ENDPOINT = "{% url 'api:project-list' %}";
         const DETAIL_PROJECT_ENDPOINT = "{% url 'api:project-detail' '00000000-0000-0000-0000-000000000000' %}";
         const STAR_PROJECT_ENDPOINT = "{% url 'api:project-star' '00000000-0000-0000-0000-000000000000' %}";
+        const EDIT_PROJECT_ENDPOINT = "{% url 'main:edit_project' '00000000-0000-0000-0000-000000000000' %}";
         const IS_SUPERUSER = "{{ user.is_superuser|yesno:'true,false' }}" === "true";
         const IS_AUTHENTICATED = "{{ user.is_authenticated|yesno:'true,false' }}" === "true";
+        const CAN_EDIT = "{{ can_edit|yesno:'true,false' }}" === "true";
 
         const loadingState = document.getElementById('loading');
         const errorState = document.getElementById('error');
@@ -102,13 +104,16 @@
             const image = project.project_image_url
                 ? `<img src="${escapeHtml(project.project_image_url)}" alt="${escapeHtml(project.title)}" class="project-image">` : '';
             const link = project.project_url
-                ? `<a href="${escapeHtml(project.project_url)}" class="button">Open project</a>` : '';
+                ? `<a href="${escapeHtml(project.project_url)}" class="button">View</a>` : '';
+            const edit = CAN_EDIT
+            ? `<a href="${projectEndpoint(EDIT_PROJECT_ENDPOINT, project.id)}" class="button button-secondary">Edit</a>`
+            : '';
             const star = IS_AUTHENTICATED
                 ? `<button type="button" class="button button-star${project.is_starred ? ' is-starred' : ''}"
                     data-action="star" data-id="${escapeHtml(project.id)}"
                     title="${escapeHtml(project.starred_by_names)}">
-                    ${project.is_starred ? 'Unstar' : 'Star'} (${project.star_count})</button>`
-                : `<a href="{% url 'main:login' %}" class="button">Login to star (${project.star_count})</a>`;
+                    ${project.is_starred ? '★ Unstar' : '★ Star'} (${project.star_count})</button>`
+                : `<a href="{% url 'main:login' %}" class="button button-star">Login to star (${project.star_count})</a>`;
             const remove = IS_SUPERUSER
                 ? `<button type="button" class="button button-danger" data-action="delete"
                     data-id="${escapeHtml(project.id)}">Delete</button>` : '';
@@ -116,7 +121,7 @@
                 <span class="experience-category">${escapeHtml(project.tech_stack)}</span>
                 <p class="experience-description">${escapeHtml(project.description)}</p>
                 <div class="project-card-actions"><div class="project-actions">
-                ${link}${star}${remove}</div></div>`;
+                ${link}${star}${edit}${remove}</div></div>`;
             return article;
         }
 
