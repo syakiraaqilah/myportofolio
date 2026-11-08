@@ -195,3 +195,42 @@ Selanjutnya, berikut adalah spesifikasi bantuan dari AI yang saya gunakan:
 3. Analisis kebenaran logika terkait urgensi penggunaan **await** pada **fetch()**
 
 `Log AI: https://claude.ai/share/3407de40-9394-4971-84f0-3fb0420727b0`
+
+## Tugas 6
+
+1. Jelaskan apa yang dimaksud dengan REST dan mengapa mengembalikan JSON saja belum cukup untuk menyebut sebuah API sebagai RESTful! Jelaskan pula perbedaan PUT dan PATCH beserta contoh kapan masing-masing sebaiknya digunakan!
+
+> REST atau Representational State Transfer merupakan arsitektur untuk merancang web API, bukan _library_ atau format data. Oleh karena itu, API yang mengembalikan JSON belum tentu RESTful. Karakteristik REST antara lain: data diperlakukan sebagai _resource_, _stateless_, klien dan server dipisah dengan API sebagai antarmuka di antara keduanya, antarmuka seragam untuk klien dan server yang dicapai dengan penggunaan metode HTTP standar, URI, dan HATEOAS (Hypermedia As The Engine Of Application State). Adapun di antara metode HTTP, terdapat PUT dan PATCH. Keduanya sama-sama memperbarui data, tetapi PUT digunakan untuk memperbarui seluruh data sementara PATCH hanya sebagian (parsial). Misalnya PUT digunakan ketika memperbarui profil _user_, sementara PATCH digunakan ketika hanya memperbarui alamat e-mail _user_.
+
+2. Jelaskan peran serializer pada Django REST Framework! Apa keuntungannya dibandingkan merakit dictionary secara manual dengan JsonResponse seperti pada Tutorial 05?
+
+> Serializer berguna untuk representasi dan validasi data. Serializer bekerja dua arah. Pada GET, serializer mengubah objek model menjadi tipe data Python yang dapat dirender ke JSON (serialization). Pada POST/PATCH, serializer mengubah input menjadi data yang sudah divalidasi dan siap disimpan (deserialization). Hasil serializer belum berupa string JSON; renderer DRF yang mengubahnya menjadi isi _response_. Serializer mengurus validasi, keamanan, dan transformasi data secara otomatis, ini lebih menguntungkan dibanding merakit _dictionary_ secara manual yang membutuhkan logika manual pula untuk hal tersebut.
+
+3. Jelaskan perbedaan autentikasi dan otorisasi pada Django REST Framework! Mengapa hak akses harus diperiksa dengan permission class di server, bukan hanya dengan menyembunyikan tombol di template?
+
+- Autentikasi: verifikasi identitas (memastikan siapa kamu)
+- Otorisasi: penentuan aksesibilitas (memastikan apa yang boleh kamu lakukan)
+
+> Hak akses harus diperiksa dengan _permission class_ di server karena ini merupakan modul bawaan yang memudahkan sehingga tidak perlu menulis logika pengecekan dari awal dan otomatis mengembalikan respons standar DRF. Dengan _permission class_, DRF juga bisa langsung memeriksa hak akses sebelum fungsi utama dijalankan. Penerapan ini penting selain penyembunyian tombol supaya request yang tidak sah tetap akan ditolak server.
+
+4. Jelaskan mengapa permintaan yang mengubah data tetap memerlukan token CSRF ketika API memakai SessionAuthentication! Mengapa test yang memakai force_authenticate tidak cukup untuk membuktikan bahwa perlindungan CSRF berjalan?
+
+> SessionAuthentication membaca _cookie_ yang disisipkan di setiap _request_ untuk mengenali _user_ termasuk _request_ yang dipicu halaman lain, sehingga terdapat kemungkinan terjadi serangan yang dipicu oleh situs jahat (seperti menyisipkan kode tertentu). Oleh karena itu, metode yang mengubah data (POST, PUT, PATCH, DELETE) memerlukan pengecekan CSRF untuk menghindari hal tersebut. Adapun test yang memakai **force_authenticate** tidak cukup untuk membuktikan bahwa perlindungan CSRF berjalan karena pada dasarnya, **force_authenticate** digunakan untuk memudahkan pengujian _permission_ dengan memilih pengguna secara langsung di mana ini tidak menguji proses login atau CSRF.
+
+
+### Penggunaan AI
+> Saya menggunakan Claude Sonnet 5 sebagai _tools_ untuk membantu saya dalam memahami konsep & _debugging_ kode untuk penyelesaian tugas 6. 
+
+Berikut alur prompting yang saya terapkan:
+
+1. Mengecek kesalahan logika/struktur kode
+2. Menganalisis jawaban dan rangkaian kode yang dicontohkan untuk kemudian diimplementasi dan dimodifikasi secara mandiri
+3. Bertanya mengenai analisis teori dan implementasi kode yang sulit
+
+Selanjutnya, berikut adalah spesifikasi bantuan dari AI yang saya gunakan:
+
+1. Analisis implementasi _permission_
+2. Analisis struktur kode template dan main untuk mengecek error dan inkonsistensi dalam kode
+3. Analisis logika dan teori terkait autentikasi dan otorisasi
+
+`Log AI: https://claude.ai/share/30b5e626-5d3f-4a68-86e4-e044f7606d01`
