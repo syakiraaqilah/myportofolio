@@ -1,11 +1,11 @@
 from datetime import datetime
 
+from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 
-from main.models import Experience
-from main.models import Skill
+from main.models import Experience, Project, Skill
 
 
 class MainTest(TestCase):
@@ -59,29 +59,42 @@ class MainTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "experience.html")
-        self.assertContains(response, self.experience.title)
-        self.assertContains(response, self.experience.description)
-        self.assertContains(response, "Part-Time")
-        self.assertContains(response, self.experience.started_at.strftime("%b %Y"))
-        self.assertContains(response, "Present")
+        self.assertContains(response, "BASE_EXPERIENCES_ENDPOINT")
+        self.assertContains(response, "PATCH")
         self.assertContains(response, f'href="{reverse("main:show_main")}"')
-
-    def test_completed_experience_page_displays_end_date(self):
-        self.experience.started_at = timezone.make_aware(datetime(2025, 1, 15, 9, 0))
-        self.experience.ended_at = timezone.make_aware(datetime(2025, 6, 30, 17, 0))
-        self.experience.save()
-
-        response = self.client.get(reverse("main:show_experience"))
-
-        self.assertContains(response, "Jan 2025 -")
-        self.assertContains(response, "Jun 2025")
-        self.assertNotContains(response, "Present")
 
     def test_empty_experience_page(self):
         Experience.objects.all().delete()
         response = self.client.get(reverse("main:show_experience"))
 
-        self.assertContains(response, "Belum ada pengalaman yang ditambahkan.")
+        self.assertContains(response, "No experiences have been added yet")
+
+    def test_experience_search_query_is_rendered(self):
+        response = self.client.get(reverse("main:show_experience"), {"title": "Assistant"})
+        self.assertEqual(response.context["title_query"], "Assistant")
+        self.assertContains(response, 'value="Assistant"')
+
+    def test_project_page_and_empty_state(self):
+        response = self.client.get(reverse("main:show_projects"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "project.html")
+        self.assertContains(response, "BASE_PROJECTS_ENDPOINT")
+        self.assertContains(response, "No projects have been added yet")
+
+    def test_owner_sees_add_and_edit_modals(self):
+        owner = User.objects.create_superuser(username="owner", password="test-password", email="owner@example.com")
+        self.client.force_login(owner)
+        project_response = self.client.get(reverse("main:show_projects"))
+        experience_response = self.client.get(reverse("main:show_experience"))
+        self.assertContains(project_response, "add-project-modal")
+        self.assertContains(project_response, "edit-project-modal")
+        self.assertContains(experience_response, "add-experience-modal")
+        self.assertContains(experience_response, "edit-experience-modal")
+
+    def test_project_search_query_is_rendered(self):
+        response = self.client.get(reverse("main:show_projects"), {"title": "Portfolio"})
+        self.assertEqual(response.context["title_query"], "Portfolio")
+        self.assertContains(response, 'value="Portfolio"')
 
     def test_skill_model(self):
         self.assertEqual(str(self.skill), "Python")
@@ -100,3 +113,7 @@ class MainTest(TestCase):
         Skill.objects.all().delete()
         response = self.client.get(reverse("main:show_skills"))
         self.assertContains(response, "Belum ada skill yang ditambahkan.")
+
+    def test_project_model(self):
+        project = Project.objects.create(title="Portfolio", description="Site", tech_stack="Django")
+        self.assertEqual(str(project), "Portfolio")
