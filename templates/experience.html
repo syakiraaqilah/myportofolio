@@ -53,15 +53,17 @@
     {% if user.is_superuser %}
         {% include "components/experience_form_modal.html" %}
     {% endif %}
+    {% if perms.main.edit_experience %}
+        {% include "components/experience_edit_modal.html" %}
+    {% endif %}
 
     <script>
         const BASE_EXPERIENCES_ENDPOINT = "{% url 'api:experience-list' %}";
         const DETAIL_EXPERIENCE_ENDPOINT = "{% url 'api:experience-detail' '00000000-0000-0000-0000-000000000000' %}";
         const STAR_EXPERIENCE_ENDPOINT = "{% url 'api:experience-star' '00000000-0000-0000-0000-000000000000' %}";
-        const EDIT_EXPERIENCE_ENDPOINT = "{% url 'main:edit_experience' '00000000-0000-0000-0000-000000000000' %}";
         const IS_SUPERUSER = "{{ user.is_superuser|yesno:'true,false' }}" === "true";
         const IS_AUTHENTICATED = "{{ user.is_authenticated|yesno:'true,false' }}" === "true";
-        const CAN_EDIT = "{{ can_edit|yesno:'true,false' }}" === "true";
+        const CAN_EDIT = "{{ perms.main.edit_experience |yesno:'true,false' }}" === "true";
 
         const loadingState = document.getElementById('loading');
         const errorState = document.getElementById('error');
@@ -70,6 +72,7 @@
         const searchForm = document.getElementById('experience-search-form');
         const searchInput = document.getElementById('search-input');
         const experienceForm = document.getElementById('experience-form');
+        const experienceEditForm = document.getElementById('experience-edit-form');
         let experiencesAbortController;
         let searchDebounceTimer;
 
@@ -102,12 +105,13 @@
         function buildExperienceCardElement(experience) {
             const articleElement = document.createElement('article');
             articleElement.className = 'experience-card';
+            articleElement._experience = experience;
             const image = experience.thumbnail
                 ? `<img src="${escapeHtml(experience.thumbnail)}" alt="Image of ${escapeHtml(experience.title)}" class="project-image">`
                 : '';
             const durationText = `${experience.started_at_display} - ${experience.is_ongoing ? 'Present' : experience.ended_at_display}`;
             const edit = CAN_EDIT
-            ? `<a href="${experienceEndpoint(EDIT_EXPERIENCE_ENDPOINT, experience.id)}" class="button button-secondary">Edit</a>`
+            ? `<button type="button" class="button button-secondary" data-action="edit" data-id="${escapeHtml(experience.id)}">Edit</button>`
             : '';
             const star = IS_AUTHENTICATED
                     ? `<button type="button" class="button button-star${experience.is_starred ? ' is-starred' : ''}"
@@ -190,7 +194,8 @@
                 const payload = Object.fromEntries([
                     'title', 'description', 'category', 'thumbnail', 'started_at', "ended_at",
                 ].map(name => [name, fields.get(name)]));
-                payload.ended_at = payload.ended_at || null;
+                payload.started_at = payload.started_at ? `${payload.started_at}T00:00:00Z` : null;
+                payload.ended_at = payload.ended_at ? `${payload.ended_at}T00:00:00Z` : null;
                 await writeExperience(BASE_EXPERIENCES_ENDPOINT, 'POST', payload);
                 experienceForm.reset();
                 document.getElementById('add-experience-modal').hidePopover();
@@ -205,10 +210,39 @@
 
         if (experienceForm) experienceForm.addEventListener('submit', addExperience);
 
+        if (experienceEditForm) experienceEditForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const submitButton = experienceEditForm.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            try {
+                const fields = new FormData(experienceEditForm);
+                const payload = Object.fromEntries(['title', 'description', 'category', 'thumbnail', 'started_at', 'ended_at']
+                    .map(name => [name, fields.get(name)]));
+                payload.started_at = payload.started_at ? `${payload.started_at}T00:00:00Z` : null;
+                payload.ended_at = payload.ended_at ? `${payload.ended_at}T00:00:00Z` : null;
+                await writeExperience(experienceEndpoint(DETAIL_EXPERIENCE_ENDPOINT, experienceEditForm.dataset.id), 'PATCH', payload);
+                document.getElementById('edit-experience-modal').hidePopover();
+                showToast('Success', 'Experience updated.', 'success');
+                await fetchExperiences(searchInput.value.trim());
+            } catch (error) {
+                showToast('Could not update experience', error.message, 'error');
+            } finally { submitButton.disabled = false; }
+        });
+
         gridContainer.addEventListener('click', async function(event) {
             const button = event.target.closest('button[data-action]');
             if (!button || button.disabled) return;
             const action = button.dataset.action;
+            if (action === 'edit') {
+                const experience = button.closest('.experience-card')._experience;
+                experienceEditForm.dataset.id = experience.id;
+                for (const name of ['title', 'description', 'category', 'thumbnail'])
+                    experienceEditForm.elements[name].value = experience[name] || '';
+                experienceEditForm.elements.started_at.value = experience.started_at ? experience.started_at.slice(0, 10) : '';
+                experienceEditForm.elements.ended_at.value = experience.ended_at ? experience.ended_at.slice(0, 10) : '';
+                document.getElementById('edit-experience-modal').showPopover();
+                return;
+            }
             if (action === 'delete' && !window.confirm('Delete this experience?')) return;
             button.disabled = true;
             try {

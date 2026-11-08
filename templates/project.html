@@ -53,15 +53,18 @@
     {% if user.is_superuser %}
         {% include "components/project_form_modal.html" %}
     {% endif %}
+    {% if perms.main.edit_project %}
+        {% include "components/project_edit_modal.html" %}
+    {% endif %}
 
     <script>
         const BASE_PROJECTS_ENDPOINT = "{% url 'api:project-list' %}";
         const DETAIL_PROJECT_ENDPOINT = "{% url 'api:project-detail' '00000000-0000-0000-0000-000000000000' %}";
         const STAR_PROJECT_ENDPOINT = "{% url 'api:project-star' '00000000-0000-0000-0000-000000000000' %}";
-        const EDIT_PROJECT_ENDPOINT = "{% url 'main:edit_project' '00000000-0000-0000-0000-000000000000' %}";
+        const EDIT_PROJECT_ENDPOINT = "{% url 'api:project-detail' '00000000-0000-0000-0000-000000000000' %}";
         const IS_SUPERUSER = "{{ user.is_superuser|yesno:'true,false' }}" === "true";
         const IS_AUTHENTICATED = "{{ user.is_authenticated|yesno:'true,false' }}" === "true";
-        const CAN_EDIT = "{{ can_edit|yesno:'true,false' }}" === "true";
+        const CAN_EDIT = "{{ perms.main.edit_project |yesno:'true,false' }}" === "true";
 
         const loadingState = document.getElementById('loading');
         const errorState = document.getElementById('error');
@@ -70,6 +73,7 @@
         const searchForm = document.getElementById('project-search-form');
         const searchInput = document.getElementById('search-input');
         const projectForm = document.getElementById('project-form');
+        const projectEditForm = document.getElementById('project-edit-form');
         let projectsAbortController;
         let searchDebounceTimer;
 
@@ -101,12 +105,13 @@
         function buildProjectCardElement(project) {
             const article = document.createElement('article');
             article.className = 'experience-card';
+            article._project = project;
             const image = project.project_image_url
                 ? `<img src="${escapeHtml(project.project_image_url)}" alt="${escapeHtml(project.title)}" class="project-image">` : '';
             const link = project.project_url
                 ? `<a href="${escapeHtml(project.project_url)}" class="button">View</a>` : '';
             const edit = CAN_EDIT
-            ? `<a href="${projectEndpoint(EDIT_PROJECT_ENDPOINT, project.id)}" class="button button-secondary">Edit</a>`
+            ? `<button type="button" class="button button-secondary" data-action="edit" data-id="${escapeHtml(project.id)}">Edit</button>`
             : '';
             const star = IS_AUTHENTICATED
                 ? `<button type="button" class="button button-star${project.is_starred ? ' is-starred' : ''}"
@@ -191,10 +196,35 @@
 
         if (projectForm) projectForm.addEventListener('submit', addProject);
 
+        if (projectEditForm) projectEditForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const submitButton = projectEditForm.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            try {
+                const fields = new FormData(projectEditForm);
+                const payload = Object.fromEntries(['title', 'description', 'tech_stack', 'project_url', 'project_image_url']
+                    .map(name => [name, fields.get(name) || '']));
+                await writeProject(projectEndpoint(EDIT_PROJECT_ENDPOINT, projectEditForm.dataset.id), 'PATCH', payload);
+                document.getElementById('edit-project-modal').hidePopover();
+                showToast('Success', 'Project updated.', 'success');
+                await fetchProjects(searchInput.value.trim());
+            } catch (error) {
+                showToast('Could not update project', error.message, 'error');
+            } finally { submitButton.disabled = false; }
+        });
+
         gridContainer.addEventListener('click', async function(event) {
             const button = event.target.closest('button[data-action]');
             if (!button || button.disabled) return;
             const action = button.dataset.action;
+            if (action === 'edit') {
+                const project = button.closest('.experience-card')._project;
+                projectEditForm.dataset.id = project.id;
+                for (const name of ['title', 'description', 'tech_stack', 'project_url', 'project_image_url'])
+                    projectEditForm.elements[name].value = project[name] || '';
+                document.getElementById('edit-project-modal').showPopover();
+                return;
+            }
             if (action === 'delete' && !window.confirm('Delete this project?')) return;
             button.disabled = true;
             try {

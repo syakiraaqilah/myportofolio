@@ -1,5 +1,4 @@
 from rest_framework.permissions import BasePermission, SAFE_METHODS
-from main.utils import is_editor
 
 edit_perm = None
 
@@ -24,6 +23,11 @@ class IsPortfolioOwnerOrEditorOrReadOnly(BasePermission):
             return True
         return (
             request.method in ("PUT", "PATCH")
-            and is_editor(request.user)
+            and request.user.has_perm(self.edit_perm)
         )
 
+class CanEditProject(IsPortfolioOwnerOrEditorOrReadOnly):
+    edit_perm = "main.edit_project"
+
+class CanEditExperience(IsPortfolioOwnerOrEditorOrReadOnly):
+    edit_perm = "main.edit_experience"
